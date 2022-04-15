@@ -1,0 +1,20 @@
+2022-04-15 15:30:37.761 IST  INFO     c.l.c.i.a.g.p.ParserApplication:55 - Starting ParserApplication using Java 17.0.2 on DESKTOP-BBUUQ9A with PID 17520 (D:\work\java\STS-ws\parser\target\classes started by Admin in D:\work\java\STS-ws\parser)
+2022-04-15 15:30:37.763 IST  INFO     c.l.c.i.a.g.p.ParserApplication:640 - No active profile set, falling back to 1 default profile: "default"
+2022-04-15 15:30:37.838 IST  INFO     o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor:255 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-04-15 15:30:38.531 IST  INFO     o.s.d.r.c.RepositoryConfigurationDelegate:262 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-04-15 15:30:38.534 IST  INFO     o.s.d.r.c.RepositoryConfigurationDelegate:132 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-04-15 15:30:38.558 IST  INFO     o.s.d.r.c.RepositoryConfigurationDelegate:201 - Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+2022-04-15 15:30:38.823 IST  INFO     c.l.c.i.a.g.p.c.JsonLoader:50 - Unit Id config file loaded
+2022-04-15 15:30:38.823 IST  INFO     c.l.c.i.a.g.p.c.JsonLoader:51 - {unitIds=[2222222, 0803, 3333, 4444, 5555, 6666, 7777, 8888, 9999, 1112, 1113, 1114, 1115, 1116, 1117, 1118, 1119, 1120, 1121]}
+2022-04-15 15:30:38.824 IST  INFO     c.l.c.i.a.g.p.c.JsonLoader:52 - [2222222, 0803, 3333, 4444, 5555, 6666, 7777, 8888, 9999, 1112, 1113, 1114, 1115, 1116, 1117, 1118, 1119, 1120, 1121]
+2022-04-15 15:30:39.609 IST  INFO     o.s.b.d.a.OptionalLiveReloadServer:58 - LiveReload server is running on port 35729
+2022-04-15 15:30:39.693 IST  INFO     c.l.c.i.a.g.p.ParserApplication:61 - Started ParserApplication in 2.735 seconds (JVM running for 3.6)
+2022-04-15 15:33:28.006 IST  INFO     c.l.c.i.a.g.p.ParserApplicationTests:55 - Starting ParserApplicationTests using Java 17.0.2 on DESKTOP-BBUUQ9A with PID 17612 (started by Admin in D:\work\java\STS-ws\parser)
+2022-04-15 15:33:28.009 IST  INFO     c.l.c.i.a.g.p.ParserApplicationTests:640 - No active profile set, falling back to 1 default profile: "default"
+2022-04-15 15:33:28.560 IST  INFO     o.s.d.r.c.RepositoryConfigurationDelegate:262 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-04-15 15:33:28.564 IST  INFO     o.s.d.r.c.RepositoryConfigurationDelegate:132 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-04-15 15:33:28.602 IST  INFO     o.s.d.r.c.RepositoryConfigurationDelegate:201 - Finished Spring Data repository scanning in 14 ms. Found 0 Redis repository interfaces.
+2022-04-15 15:33:28.937 IST  INFO     c.l.c.i.a.g.p.c.JsonLoader:50 - Unit Id config file loaded
+2022-04-15 15:33:28.938 IST  INFO     c.l.c.i.a.g.p.c.JsonLoader:51 - {unitIds=[2222222, 0803, 3333, 4444, 5555, 6666, 7777, 8888, 9999, 1112, 1113, 1114, 1115, 1116, 1117, 1118, 1119, 1120, 1121]}
+2022-04-15 15:33:28.939 IST  INFO     c.l.c.i.a.g.p.c.JsonLoader:52 - [2222222, 0803, 3333, 4444, 5555, 6666, 7777, 8888, 9999, 1112, 1113, 1114, 1115, 1116, 1117, 1118, 1119, 1120, 1121]
+2022-04-15 15:33:29.757 IST  INFO     c.l.c.i.a.g.p.ParserApplicationTests:61 - Started ParserApplicationTests in 2.263 seconds (JVM running for 3.66)
