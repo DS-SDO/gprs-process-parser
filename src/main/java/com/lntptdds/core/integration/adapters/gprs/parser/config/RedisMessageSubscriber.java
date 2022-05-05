@@ -1,19 +1,12 @@
 package com.lntptdds.core.integration.adapters.gprs.parser.config;
 
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 
-import java.io.FileReader;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -32,7 +25,7 @@ public class RedisMessageSubscriber implements MessageListener {
 
 
     static final HashMap<String,String> jsonMap = JsonLoader.jsonMap();
-    public static List<String> messageList = new ArrayList<String>();
+    public static List<String> messageList = new ArrayList<>();
 
 
     public RedisMessageSubscriber(){}
@@ -84,9 +77,8 @@ public class RedisMessageSubscriber implements MessageListener {
 
                     sendMap.put(jsonMap.get(s1),df.format(hexValueToDouble));
                 } else if (rcvedValue.endsWith(Constants.U0) || rcvedValue.endsWith(Constants.S0)) {
-                    double hexValueToDouble = hexValueToInt / 1.0;
 
-                    sendMap.put(jsonMap.get(s1), String.valueOf(hexValueToDouble));
+                    sendMap.put(jsonMap.get(s1), String.valueOf((double) hexValueToInt));
 
                 } else if (rcvedValue.endsWith(Constants.D0)) {
 
@@ -95,7 +87,7 @@ public class RedisMessageSubscriber implements MessageListener {
                 } else if (rcvedValue.endsWith(Constants.B0)) {
 
                     if (rcvedValue.startsWith("BF")) {
-                        Boolean bankFaultStatus = Boolean.valueOf(String.valueOf(hexValueToInt));
+                        boolean bankFaultStatus = Boolean.parseBoolean(String.valueOf(hexValueToInt));
                         if (bankFaultStatus)
                             log.info("Bank is Healthy");
 
@@ -106,12 +98,11 @@ public class RedisMessageSubscriber implements MessageListener {
 
                     } else if (rcvedValue.startsWith("ER3")) {
 
-                        int bankFaultVar1 =hexValueToInt;
-                        if (bankFaultVar1 == 0)
+                        if (hexValueToInt == 0)
                             log.info("Bank Fault Var 1: Fault Absent");
                         else {
                             log.error("Bank Fault Var 1: Fault Present");
-                            log.info("Reported Faults are: " + FaultLogic.parseFaultVariable1(bankFaultVar1).toString());
+                            log.info("Reported Faults are: " + FaultLogic.parseFaultVariable1(hexValueToInt));
 
 
                             //To DO for all fault vars
@@ -119,43 +110,44 @@ public class RedisMessageSubscriber implements MessageListener {
 
                         }
 
-                        sendMap.put(jsonMap.get(s1), FaultLogic.parseFaultVariable1(bankFaultVar1).toString());
+                        String faultStr1 = String.join(";",FaultLogic.parseFaultVariable1(hexValueToInt));
+                        sendMap.put(jsonMap.get(s1), faultStr1);
 
 
                     } else if (rcvedValue.startsWith("ER4")) {
 
-                        int bankFaultVar2 = hexValueToInt;
-                        if (bankFaultVar2 == 0)
+                        if (hexValueToInt == 0)
                             log.info("Bank Fault Var 2: Fault Absent");
                         else {
                             log.error("Bank Fault Var 2: Fault Present");
-                            log.info("Reported Faults are: " + String.valueOf(FaultLogic.parseFaultVariable2(bankFaultVar2)));
+                            log.info("Reported Faults are: " + FaultLogic.parseFaultVariable2(hexValueToInt));
 
 
                             //To DO for all fault vars
 
 
                         }
-
-                        sendMap.put(jsonMap.get(s1), FaultLogic.parseFaultVariable2(bankFaultVar2).toString());
+                        String faultStr2 = String.join(";",FaultLogic.parseFaultVariable1(hexValueToInt));
+                        sendMap.put(jsonMap.get(s1), faultStr2);
+//                        sendMap.put(jsonMap.get(s1), FaultLogic.parseFaultVariable2(bankFaultVar2).toString());
 
 
                     } else if (rcvedValue.startsWith("ER5")) {
 
-                        int bankFaultVar3 = hexValueToInt;
-                        if (bankFaultVar3 == 0)
+                        if (hexValueToInt == 0)
                             log.info("Bank Fault Var 3: Fault Absent");
                         else {
                             log.error("Bank Fault Var 3: Fault Present");
-                            log.error("Reported Faults are: " + FaultLogic.parseFaultVariable3(bankFaultVar3).toString());
+                            log.error("Reported Faults are: " + FaultLogic.parseFaultVariable3(hexValueToInt));
 
 
                             //To DO for all fault vars
 
 
                         }
-
-                        sendMap.put(jsonMap.get(s1), FaultLogic.parseFaultVariable1(bankFaultVar3).toString());
+                        String faultStr3 = String.join(";",FaultLogic.parseFaultVariable1(hexValueToInt));
+                        sendMap.put(jsonMap.get(s1), faultStr3);
+//                        sendMap.put(jsonMap.get(s1), FaultLogic.parseFaultVariable1(bankFaultVar3).toString());
 
 
                     }
@@ -173,11 +165,11 @@ public class RedisMessageSubscriber implements MessageListener {
         log.info(String.valueOf(sendMap.size()));
 
 
-        Iterator it = sendMap.entrySet().iterator();
+        Iterator<Map.Entry<String, String>> it = sendMap.entrySet().iterator();
         StringBuilder s = new StringBuilder();
         int i =0;
         while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
+            Map.Entry<String, String> pair = it.next();
             s.append(pair.getKey());
             s.append(" ");
             i = i+1;

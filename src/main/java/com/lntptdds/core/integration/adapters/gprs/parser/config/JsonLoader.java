@@ -22,8 +22,8 @@ public class JsonLoader {
     public static HashMap<String,String> jsonMap() {
 
         try {
-            Reader getLocalJsonFile = new InputStreamReader(JsonLoader.class.getResourceAsStream("/test2.json"));
-            //JsonReader getLocalJsonFile = new JsonReader(new FileReader("src/main/resources/test2.json"));
+//            Reader getLocalJsonFile = new InputStreamReader(JsonLoader.class.getResourceAsStream("/test2.json"));
+            JsonReader getLocalJsonFile = new JsonReader(new FileReader("config/test2.json"));
             System.out.println("json file loaded");
             return  new Gson().fromJson(getLocalJsonFile, HashMap.class);
         } catch (Exception e) {
@@ -36,9 +36,9 @@ public class JsonLoader {
 
         try {
 
-            Reader getLocalJsonFile = new InputStreamReader(JsonLoader.class.getResourceAsStream("/unitids.json"));
+//            Reader getLocalJsonFile = new InputStreamReader(JsonLoader.class.getResourceAsStream("/unitids.json"));
 
-//            JsonReader getLocalJsonFile = new JsonReader(new FileReader("src/main/resources/unitids.json"));
+            JsonReader getLocalJsonFile = new JsonReader(new FileReader("config/unitids.json"));
 
 
             System.out.println("Unit Id json file loaded");
@@ -57,7 +57,7 @@ public class JsonLoader {
         }
         catch (Exception e) {
             System.out.println("Failed to read file");
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
     }
 }
