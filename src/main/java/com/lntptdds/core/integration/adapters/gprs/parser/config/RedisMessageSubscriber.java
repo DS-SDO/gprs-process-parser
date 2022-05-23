@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 @Service
 @Slf4j
@@ -40,6 +43,61 @@ public class RedisMessageSubscriber implements MessageListener {
     }
 
 
+    public static void calcutil(HashMap<String, String> sendMap){
+        DecimalFormat df = new DecimalFormat("0.0");
+        try{
+        BiFunction<String,String,String> pf = (a1, b1)-> {  if (a1 ==null || b1 == null) return "0.0";
+            if (!a1.isEmpty() && !b1.isEmpty()) {
+
+
+
+               if(Double.parseDouble(b1) != 0.0) return df.format(Double.parseDouble(a1) / Double.parseDouble(b1));
+                else
+                    return String.valueOf(0.0);}
+        return "0.0";
+        };
+        BiFunction<String,String,String> apprPower = (a1,b1)->{
+            if (a1 ==null || b1 == null) return "0.0";
+            if(!a1.isEmpty() && !b1.isEmpty()){
+                var val = Double.parseDouble(a1) + Double.parseDouble(b1);
+                return String.valueOf(val);
+
+            }
+           return "0.0";
+        };
+
+        sendMap.put("R-KVA",apprPower.apply(sendMap.get("R-KW"),sendMap.get("R-Kvar")));
+        sendMap.put("Y-KVA",apprPower.apply(sendMap.get("Y-KW"),sendMap.get("Y-Kvar")));
+        sendMap.put("B-KVA",apprPower.apply(sendMap.get("B-KW"),sendMap.get("B-Kvar")));
+        sendMap.put("R-PF", pf.apply(sendMap.get("R-KW"),sendMap.get("R-KVA")));
+        sendMap.put("Y-PF", pf.apply(sendMap.get("R-KW"),sendMap.get("Y-KVA")));
+        sendMap.put("B-PF", pf.apply(sendMap.get("R-KW"),sendMap.get("B-KVA")));
+
+        String tPf = df.format((Double.parseDouble(sendMap.get("R-PF")) +
+                        Double.parseDouble(sendMap.get("Y-PF")) +
+                        Double.parseDouble(sendMap.get("B-PF"))
+        )/3.0);
+        sendMap.put("T-PF",tPf);
+        String tKw = String.valueOf(Double.parseDouble(sendMap.get("R-KW")) +
+                Double.parseDouble(sendMap.get("Y-KW")) +
+                Double.parseDouble(sendMap.get("B-KW"))) ;
+        String tKvar = String.valueOf(Double.parseDouble(sendMap.get("R-Kvar")) +
+                Double.parseDouble(sendMap.get("Y-Kvar")) +
+                Double.parseDouble(sendMap.get("B-Kvar")));
+        sendMap.put("T-KvAR", tKvar);
+        sendMap.put("T-KvA", String.valueOf(Double.parseDouble(tKw ) + Double.parseDouble(tKvar)));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            log.error("Calculatio failed");
+        }
+
+
+
+    }
+
+
+
     public void onMessage(Message message, byte[] pattern) {
 
         messageList.add(message.toString());
@@ -64,8 +122,10 @@ public class RedisMessageSubscriber implements MessageListener {
 
                 String s1 = rcvedValue.substring(0, 3);
                 String s2 = rcvedValue.substring(3, rcvedValue.length() - 2);
-                // System.out.println(s2);
-                int hexValueToInt = Integer.parseInt(s2, 16);
+                System.out.println(s2);
+//                System.out.println(Long.parseLong(s2,Character.MAX_RADIX));
+                int hexValueToInt =  s2.startsWith("FFFF") ? 0 : Integer.parseInt(s2,Character.MAX_RADIX);
+//                 hexValueToInt = Integer.parseInt(s2,Character.MAX_RADIX);
 
 
                 if (rcvedValue.endsWith(Constants.U1) || rcvedValue.endsWith(Constants.S1)) {
@@ -157,13 +217,14 @@ public class RedisMessageSubscriber implements MessageListener {
 
 
                 LocalDateTime tim = LocalDateTime.now();
+
                 sendMap.put("time", tim.toString());
 
             }
         }
         log.info("--------------------------------------------------");
         log.info(String.valueOf(sendMap.size()));
-
+        calcutil(sendMap);
 
         Iterator<Map.Entry<String, String>> it = sendMap.entrySet().iterator();
         StringBuilder s = new StringBuilder();
