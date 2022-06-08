@@ -153,6 +153,7 @@ public class RedisMessageSubscriber implements MessageListener {
 
                         else
                             log.error("Bank is Faulty");
+                        sendMap.put(jsonMap.get(s1),String.valueOf(bankFaultStatus));
 
 
 
