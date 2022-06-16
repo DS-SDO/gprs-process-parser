@@ -124,8 +124,8 @@ public class RedisMessageSubscriber implements MessageListener {
                 String s2 = rcvedValue.substring(3, rcvedValue.length() - 2);
                 System.out.println(s2);
 //                System.out.println(Long.parseLong(s2,Character.MAX_RADIX));
-                int hexValueToInt =  s2.startsWith("FFFF") ? 0 : Integer.parseInt(s2,Character.MAX_RADIX);
-//                 hexValueToInt = Integer.parseInt(s2,Character.MAX_RADIX);
+//                int hexValueToInt =  s2.startsWith("FFFF") ? 0 : Integer.parseInt(s2,Character.MAX_RADIX);
+                    long  hexValueToInt = Long.parseLong(s2,Character.MAX_RADIX);
 
 
                 if (rcvedValue.endsWith(Constants.U1) || rcvedValue.endsWith(Constants.S1)) {
@@ -163,7 +163,7 @@ public class RedisMessageSubscriber implements MessageListener {
                             log.info("Bank Fault Var 1: Fault Absent");
                         else {
                             log.error("Bank Fault Var 1: Fault Present");
-                            log.info("Reported Faults are: " + FaultLogic.parseFaultVariable1(hexValueToInt));
+                            log.info("Reported Faults are: " + FaultLogic.parseFaultVariable1((int)hexValueToInt));
 
 
                             //To DO for all fault vars
@@ -171,7 +171,7 @@ public class RedisMessageSubscriber implements MessageListener {
 
                         }
 
-                        String faultStr1 = String.join(";",FaultLogic.parseFaultVariable1(hexValueToInt));
+                        String faultStr1 = String.join(";",FaultLogic.parseFaultVariable1((int)hexValueToInt));
                         sendMap.put(jsonMap.get(s1), faultStr1);
 
 
@@ -181,14 +181,14 @@ public class RedisMessageSubscriber implements MessageListener {
                             log.info("Bank Fault Var 2: Fault Absent");
                         else {
                             log.error("Bank Fault Var 2: Fault Present");
-                            log.info("Reported Faults are: " + FaultLogic.parseFaultVariable2(hexValueToInt));
+                            log.info("Reported Faults are: " + FaultLogic.parseFaultVariable2((int)hexValueToInt));
 
 
                             //To DO for all fault vars
 
 
                         }
-                        String faultStr2 = String.join(";",FaultLogic.parseFaultVariable1(hexValueToInt));
+                        String faultStr2 = String.join(";",FaultLogic.parseFaultVariable1((int)hexValueToInt));
                         sendMap.put(jsonMap.get(s1), faultStr2);
 //                        sendMap.put(jsonMap.get(s1), FaultLogic.parseFaultVariable2(bankFaultVar2).toString());
 
@@ -199,14 +199,14 @@ public class RedisMessageSubscriber implements MessageListener {
                             log.info("Bank Fault Var 3: Fault Absent");
                         else {
                             log.error("Bank Fault Var 3: Fault Present");
-                            log.error("Reported Faults are: " + FaultLogic.parseFaultVariable3(hexValueToInt));
+                            log.error("Reported Faults are: " + FaultLogic.parseFaultVariable3((int)hexValueToInt));
 
 
                             //To DO for all fault vars
 
 
                         }
-                        String faultStr3 = String.join(";",FaultLogic.parseFaultVariable1(hexValueToInt));
+                        String faultStr3 = String.join(";",FaultLogic.parseFaultVariable1((int)hexValueToInt));
                         sendMap.put(jsonMap.get(s1), faultStr3);
 //                        sendMap.put(jsonMap.get(s1), FaultLogic.parseFaultVariable1(bankFaultVar3).toString());
 
